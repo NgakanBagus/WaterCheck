@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Quality Data</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+</head>
+<body style="background-color: powderblue">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Water Quality</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{{ url_for('user') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('testing') }}">Testing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('graphics') }}">Graphics</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <span class="navbar-text">
+                            <strong>{{ session.name }}</strong>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('logout') }}" class="btn btn-danger ml-2">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1>Water Quality Data</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <canvas id="phChart" width="400" height="200"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="solidsChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Latest pH Measurement</h5>
+                        <p class="card-text">pH: <span id="phValue">N/A</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Latest Solids Measurement</h5>
+                        <p class="card-text">Solids: <span id="solidsValue">N/A</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function fetchAndUpdateData() {
+            fetch('/api/air_data')
+            .then(response => response.json())
+            .then(data => {
+                const phValues = data.data.map(record => record.ph);
+                const solidsValues = data.data.map(record => record.solids);
+                const labels = Array.from({ length: phValues.length }, (_, i) => i + 1);
+
+                // Update pH chart
+                const ctxPh = document.getElementById('phChart').getContext('2d');
+                const phChart = new Chart(ctxPh, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'pH Values',
+                            data: phValues,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+                // Update Solids chart
+                const ctxSolids = document.getElementById('solidsChart').getContext('2d');
+                const solidsChart = new Chart(ctxSolids, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Solids Values',
+                            data: solidsValues,
+                            borderColor: 'rgba(153, 102, 255, 1)',
+                            borderWidth: 1,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+                // Update latest values
+                if (phValues.length > 0 && solidsValues.length > 0) {
+                    document.getElementById('phValue').innerText = phValues[phValues.length - 1];
+                    document.getElementById('solidsValue').innerText = solidsValues[solidsValues.length - 1];
+                }
+            });
+        }
+
+        // Fetch data and update charts and values every 5 seconds
+        setInterval(fetchAndUpdateData, 5000);
+        fetchAndUpdateData(); // Initial fetch
+    </script>
+</body>
+</html>

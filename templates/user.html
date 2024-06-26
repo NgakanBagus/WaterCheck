@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Global Styles */
+        body {
+            background-color: #f8f9fa;
+        }
+
+        /* Profile Header Styles */
+        .profile-header {
+            margin-top: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* Welcome Message Styles */
+        .welcome-message {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* Thick Underline Styles */
+        .thick {
+            text-decoration-line: underline;
+            text-decoration-style: solid;
+            text-decoration-color: blue;
+            text-decoration-thickness: 2px;
+        }
+
+        /* Hero Section Styles */
+        #hero {
+            background: url('path/to/your/backgroundImage.jpg') center/cover fixed no-repeat;
+            color: white;
+            height: 100vh;
+        }
+
+        /* Feature Card Styles */
+        .feature-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .feature-card .icon {
+            font-size: 2rem;
+            color: #2cbcff;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Icon List Styles */
+        .icon-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .icon-list li i {
+            color: #2cbcff;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body style="background-color: powderblue">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Water Quality</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('user') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('testing') }}">Testing</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('graphics') }}">Graphics</a>
+                  </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <span class="navbar-text">
+                            <strong>{{ session.name }}</strong>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('logout') }}" class="btn btn-danger ml-2">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Section -->
+    <section id="about" class=" py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <img class="w-50 ml-5" src="static/pics/water.png" alt="About Water Quality">
+                </div>
+                <div class="col-md-6">
+                    <p class="text-primary font-weight-bold">Apa itu Water Quality</p>
+                    <h1 class="h2 font-weight-bold">Water Quality</h1>
+                    <p>Aplikasi berbasis web yang dirancang untuk memantau dan mengelola kualitas air di berbagai lokasi. Aplikasi ini membantu pengguna, baik individu maupun organisasi, untuk memastikan air yang mereka gunakan atau kelola memenuhi standar kualitas yang diperlukan</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="bg-white text-dark py-5">
+        <div class="container text-center">
+            <h2 class="h1 font-weight-bold mb-5">Features</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-tint"></i></div>
+                        <h3 class="h4 font-weight-bold mb-3">Data Analysis</h3>
+                        <p class="text-muted">Menyediakan visualisasi data dalam bentuk grafik dan diagram untuk kemudahan interpretasi</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-hourglass-half"></i></div>
+                        <h3 class="h4 font-weight-bold mb-3">Real-Time Monitoring</h3>
+                        <p class="text-muted">Mengumpulkan data kualitas air secara langsung dari berbagai sensor dan perangkat monitoring</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-mobile-alt"></i></div>
+                        <h3 class="h4 font-weight-bold mb-3">Sensor Integration</h3>
+                        <p class="text-muted">Mendukung integrasi dengan sistem IoT untuk pengumpulan data yang lebih efisien</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="icon"><i class="fas fa-bell"></i></div>
+                        <h3 class="h4 font-weight-bold mb-3">Notification Alerts</h3>
+                        <p class="text-muted">Mengirimkan notifikasi dan peringatan jika kualitas air melebihi batas yang ditentukan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="h2 font-weight-bold text-primary">Benefit Of Water Quality</h1>
+                    <br>
+                    <ul class="icon-list">
+                        <li><i class="fas fa-check"></i> <span>Pengambilan Keputusan yang Tepat</span></li>
+                        <li><i class="fas fa-check"></i> <span>Peningkatan Kesehatan dan Keselamatan</span></li>
+                        <li><i class="fas fa-check"></i> <span>Konservasi Lingkungan</span></li>
+                        <li><i class="fas fa-check"></i> <span>Efisiensi Operasional</span></li>
+                        <li><i class="fas fa-check"></i> <span>Kepatuhan Regulasi</span></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <img src="/static/pics/water2.png" alt="student using laptop" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-white py-5">
+        <div class="container">
+            <h1 class="h2 font-weight-bold text-dark text-center mb-5">Contact Us</h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Your Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea class="form-control" id="message" rows="3" placeholder="Your Message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <div class="map-responsive">
+                        <img src="/static/pics/contact.png" alt="student using laptop" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer id="footer" class=" py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h4 class="h6 font-weight-bold text-white mb-3 text-dark">Contact Info</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt"></i> Jln. Raya Kampus UNUD, Bukit Jimbaran, Kuta Selatan, Badung, 08261, Bali, Indonesia</li>
+                        <li class="mb-2"><i class="fas fa-phone"></i> +62 82147045585</li>
+                        <li class="mb-2"><i class="fas fa-envelope"></i> anantawijaya994@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h4 class="h6 font-weight-bold text-white mb-3 text-dark">About</h4>
+                    <p class="text-muted">Water Quality is a web-based application that functions to check the quality of healthy and dirty water</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h4 class="h6 font-weight-bold text-white mb-3 text-dark">Subscribe</h4>
+                    <form>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="subscriberEmail" placeholder="Your Email">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

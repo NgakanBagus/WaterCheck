@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body style="background-color: powderblue">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Water Quality</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('user') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('testing') }}">Testing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('graphics') }}">Graphics</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <span class="navbar-text">
+                        <strong>{{ session.name }}</strong>
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('logout') }}" class="btn btn-danger ml-2">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="display-4 text-center">Water Quality Prediction</h1>
+                    <form action="{{ url_for('testing') }}" method="post">
+                        <div class="form-group">
+                            <label for="ph">pH value:</label>
+                            <input type="number" step="0.01" name="ph" id="ph" class="form-control" placeholder="pH value" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="solids">Solids:</label>
+                            <input type="number" step="0.01" name="solids" id="solids" class="form-control" placeholder="solids" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Water Quality Test</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="display-4 text-center mt-4">{{ prediction_text }}</h1>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
